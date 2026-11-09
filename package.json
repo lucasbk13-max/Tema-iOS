@@ -1,0 +1,14 @@
+{
+  "name": "noir-ios-theme",
+  "version": "1.0.0",
+  "description": "Tema escuro e minimalista para iOS",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "lucide-static": "^0.460.0"
+  },
+  "type": "module",
+  "private": true
+}

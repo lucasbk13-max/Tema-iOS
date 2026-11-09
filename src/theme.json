@@ -1,0 +1,15 @@
+{
+  "name": "Noir",
+  "version": "1.0.0",
+  "palette": {
+    "background": "#000000",
+    "tile": "#0E0E10",
+    "tileEdge": "#1C1C1F",
+    "surface": "#141416",
+    "line": "#2A2A2E",
+    "text": "#EDEDEF",
+    "muted": "#8A8A90",
+    "accent": "#D9D9DC"
+  },
+  "icon": { "glyphScale": 0.46, "strokeWidth": 1.5 }
+}

@@ -1,0 +1,9 @@
+Package: com.noir.theme
+Name: Noir
+Version: 1.0.0
+Architecture: iphoneos-arm
+Description: Tema escuro e minimalista para iOS.
+Section: Themes
+Depends: com.spark.snowboard
+Author: Noir
+Maintainer: Noir
