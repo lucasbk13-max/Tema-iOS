@@ -5,10 +5,13 @@ Funciona **sem jailbreak** (app Atalhos + Scriptable). Para quem tem jailbreak, 
 
 ![Prévia](preview.png)
 
+> **Para instalar no iPhone, siga o [INSTALAR.md](INSTALAR.md)** — os ícones entram todos de uma vez por um perfil de configuração.
+
 ## O que vem no tema
 
 | Pasta | Conteúdo |
 |---|---|
+| `dist/Noir.mobileconfig` | Perfil que adiciona 41 ícones à tela inicial de uma vez |
 | `dist/icons/` | 46 ícones em 512×512 px (apps da Apple e apps populares) |
 | `dist/wallpapers/` | 4 papéis de parede em 1290×2796 px: `void`, `horizon`, `grid`, `orbit` |
 | `widgets/` | 2 widgets para o Scriptable: relógio com bateria e agenda |
