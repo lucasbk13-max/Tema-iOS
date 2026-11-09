@@ -44,5 +44,8 @@
   {"name": "iFood", "bundle": "br.com.brainweb.ifood", "icon": "utensils", "scheme": "ifood://"},
   {"name": "LinkedIn", "bundle": "com.linkedin.LinkedIn", "icon": "briefcase", "scheme": "linkedin://"},
   {"name": "Claude", "bundle": "com.anthropic.claude", "icon": "sparkles", "scheme": "claude://"},
-  {"name": "ChatGPT", "bundle": "com.openai.chat", "icon": "bot", "scheme": "chatgpt://"}
+  {"name": "ChatGPT", "bundle": "com.openai.chat", "icon": "bot", "scheme": "chatgpt://"},
+  {"name": "Nubank", "bundle": "com.nubank.nubank", "icon": "credit-card", "scheme": "nuapp://"},
+  {"name": "Mercado Livre", "bundle": "com.mercadolibre", "icon": "shopping-bag", "scheme": "meli://"},
+  {"name": "Brave", "bundle": "com.brave.ios.browser", "icon": "shield", "scheme": "brave://"}
 ]

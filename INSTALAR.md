@@ -9,7 +9,7 @@ Abra esta página **no Safari do iPhone**. São 4 passos, uns 5 minutos.
 2. Abra o app **Arquivos › Downloads** e toque em **Noir.mobileconfig**. Aparece o aviso "Perfil baixado".
 3. Vá em **Ajustes**. No topo aparece **Perfil Baixado**. Toque nele › **Instalar** › digite o código do iPhone › **Instalar** de novo.
    O iOS mostra "Não verificado". É normal: o perfil foi feito por você, não por uma empresa.
-4. Os 41 ícones aparecem nas últimas páginas da tela inicial. Arraste-os para onde quiser.
+4. Os 44 ícones aparecem nas últimas páginas da tela inicial. Arraste-os para onde quiser.
 5. Para tirar os ícones originais: toque e segure cada um › **Remover App › Remover da Tela de Início** (o app continua instalado, na Biblioteca de Apps).
 
 Ficam de fora porque não têm como ser abertos por um ícone: **Câmera, Calculadora, Contatos, Traduzir e Casa**. Para eles, use o app Atalhos (passo a passo no [README](README.md#3-ícones-app-atalhos)) com os ícones da pasta [dist/icons](dist/icons).
