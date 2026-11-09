@@ -7,6 +7,7 @@ try { ({ chromium } = await import('playwright')); } catch { ({ chromium } = req
 import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 import { join } from 'node:path';
+import { randomUUID, createHash } from 'node:crypto';
 
 const theme = JSON.parse(readFileSync('src/theme.json', 'utf8'));
 const apps = JSON.parse(readFileSync('src/apps.json', 'utf8'));
@@ -103,13 +104,13 @@ const page = await browser.newPage({ deviceScaleFactor: 1 });
 async function renderSvg(svg, size, file) {
   await page.setViewportSize({ width: size, height: size });
   await page.setContent(`<html><body style="margin:0;background:#000">${svg}</body></html>`);
-  await page.locator('svg').screenshot({ path: file });
+  return page.locator('svg').screenshot({ path: file });
 }
 
 // 1) Ícones para o app Atalhos (512px) e para o SnowBoard (180px, formato <bundle>-large.png).
 for (const app of apps) {
   await renderSvg(iconSvg(app.icon, 512), 512, join(DIRS.shortcuts, `${slug(app.name)}.png`));
-  await renderSvg(iconSvg(app.icon, 180), 180, join(DIRS.snow, 'IconBundles', `${app.bundle}-large.png`));
+  app.png180 = await renderSvg(iconSvg(app.icon, 180), 180, join(DIRS.snow, 'IconBundles', `${app.bundle}-large.png`));
 }
 console.log(`ícones: ${apps.length}`);
 
@@ -122,6 +123,48 @@ for (const n of names) {
   await page.locator('#c').screenshot({ path: join(DIRS.wallpapers, `noir-${n}.png`) });
 }
 console.log(`papéis de parede: ${names.length}`);
+
+// 2b) Perfil de configuração: instala todos os ícones de uma vez na tela inicial (Web Clips).
+// UUIDs derivados do nome, para que reinstalar o perfil substitua os ícones em vez de duplicá-los.
+const uuid = (seed) => {
+  const h = createHash('sha1').update(`noir:${seed}`).digest('hex');
+  return `${h.slice(0, 8)}-${h.slice(8, 12)}-5${h.slice(13, 16)}-a${h.slice(17, 20)}-${h.slice(20, 32)}`.toUpperCase();
+};
+const esc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const clips = apps.filter((a) => a.scheme).map((a) => `    <dict>
+      <key>PayloadType</key><string>com.apple.webClip.managed</string>
+      <key>PayloadVersion</key><integer>1</integer>
+      <key>PayloadIdentifier</key><string>com.noir.theme.clip.${a.bundle}</string>
+      <key>PayloadUUID</key><string>${uuid(a.bundle)}</string>
+      <key>PayloadDisplayName</key><string>${esc(a.name)}</string>
+      <key>Label</key><string>${esc(a.name)}</string>
+      <key>URL</key><string>${esc(a.scheme)}</string>
+      <key>Icon</key><data>${a.png180.toString('base64')}</data>
+      <key>Precomposed</key><true/>
+      <key>FullScreen</key><false/>
+      <key>IsRemovable</key><true/>
+      <key>IgnoreManifestScope</key><true/>
+    </dict>`).join('\n');
+writeFileSync(join(OUT, 'Noir.mobileconfig'), `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>PayloadType</key><string>Configuration</string>
+  <key>PayloadVersion</key><integer>1</integer>
+  <key>PayloadIdentifier</key><string>com.noir.theme</string>
+  <key>PayloadUUID</key><string>${uuid('profile')}</string>
+  <key>PayloadDisplayName</key><string>Tema ${theme.name}</string>
+  <key>PayloadDescription</key><string>Adiciona os ícones do tema ${theme.name} à tela inicial. Para remover, apague este perfil.</string>
+  <key>PayloadOrganization</key><string>${theme.name}</string>
+  <key>PayloadRemovalDisallowed</key><false/>
+  <key>PayloadContent</key>
+  <array>
+${clips}
+  </array>
+</dict>
+</plist>
+`);
+console.log(`perfil: ${apps.filter((a) => a.scheme).length} ícones`);
 
 // 3) Metadados do SnowBoard e pacote .deb (se o dpkg-deb estiver disponível).
 writeFileSync(join(DIRS.snow, 'Info.plist'), `<?xml version="1.0" encoding="UTF-8"?>
